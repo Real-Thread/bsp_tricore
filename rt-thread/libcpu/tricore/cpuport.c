@@ -74,11 +74,14 @@ inline void trigger_scheduling(void)
 
 __attribute__((noinline)) static void tricore_systick_handler( void )
 {
+    rt_base_t level;
     IfxStm_Timer_acknowledgeTimerIrq(&tricore_timers[TRICORE_CPU_ID]);
 
+    level = rt_hw_interrupt_disable();
     systick_flag = 1;
     rt_tick_increase();
     systick_flag = 0;
+    rt_hw_interrupt_enable(level);
 
     trigger_scheduling();
 }
