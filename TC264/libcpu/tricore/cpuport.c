@@ -74,14 +74,11 @@ inline void trigger_scheduling(void)
 
 __attribute__((noinline)) static void tricore_systick_handler( void )
 {
-    rt_base_t level;
     IfxStm_Timer_acknowledgeTimerIrq(&tricore_timers[TRICORE_CPU_ID]);
 
-    level = rt_hw_interrupt_disable();
     systick_flag = 1;
     rt_tick_increase();
     systick_flag = 0;
-    rt_hw_interrupt_enable(level);
 
     trigger_scheduling();
 }
@@ -122,6 +119,9 @@ IFX_INTERRUPT(KERNEL_YIELD, 0, 2)
 void rt_hw_board_init()
 {
     IfxStm_setSuspendMode(STMs[TRICORE_CPU_ID], IfxStm_SuspendMode_hard);
+
+    /* Set-up the timer interrupt. */
+    rt_hw_systick_init();
     /* USART driver initialization is open by default */
 #ifdef RT_USING_SERIAL
     rt_hw_usart_init();
@@ -170,9 +170,6 @@ void rt_hw_context_switch_to(rt_ubase_t to)
     unsigned long ulMFCR = 0UL;
     unsigned long *lower_csa = NULL;
     unsigned long *upper_csa = NULL;
-
-    /* Set-up the timer interrupt. */
-    rt_hw_systick_init();
 
     IfxSrc_init(GPSR[TRICORE_CPU_ID], (IfxSrc_Tos)TRICORE_CPU_ID, 1);
     IfxSrc_enable(GPSR[TRICORE_CPU_ID]);
