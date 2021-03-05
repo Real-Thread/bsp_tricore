@@ -1121,13 +1121,13 @@
         		
         <configuration configurationName="Debug">
             			
-            <resource resourceType="PROJECT" workspacePath="/rt-thread_for_tc264"/>
+            <resource resourceType="PROJECT" workspacePath="/TC264"/>
             		
         </configuration>
         		
         <configuration configurationName="Release">
             			
-            <resource resourceType="PROJECT" workspacePath="/rt-thread_for_tc264"/>
+            <resource resourceType="PROJECT" workspacePath="/TC264"/>
             		
         </configuration>
         	

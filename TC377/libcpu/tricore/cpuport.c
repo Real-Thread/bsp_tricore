@@ -121,6 +121,7 @@ IFX_INTERRUPT(KERNEL_YIELD, 0, 2)
  */
 void rt_hw_board_init()
 {
+    IfxStm_setSuspendMode(STMs[TRICORE_CPU_ID], IfxStm_SuspendMode_hard);
     /* USART driver initialization is open by default */
 #ifdef RT_USING_SERIAL
     rt_hw_usart_init();
