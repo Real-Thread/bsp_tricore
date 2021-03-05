@@ -154,12 +154,8 @@ void rt_hw_context_switch(rt_ubase_t from, rt_ubase_t to)
 
 void rt_hw_context_switch_interrupt(rt_ubase_t from, rt_ubase_t to)
 {
-    rt_base_t level;
-
-    level = rt_hw_interrupt_disable();
     current_thread = from;
     to_thread = to;
-    rt_hw_interrupt_enable(level);
 
     GPSR[TRICORE_CPU_ID]->B.SETR = 1;
     __isync();
