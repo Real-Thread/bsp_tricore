@@ -11,50 +11,74 @@
 | 芯片型号 | TC264/TC364/TC377 |
 | CPU 架构 | TriCore 1.6       |
 
-## 2. 编译说明
+## 2. 下载源码
 
-1. 打开 AURIX-Studio IDE ，如下图所示点击 import 按钮导入工程。
+1. 在 env 命令行窗口输入如下命令下载官方 BSP 源码：
+
+`git clone https://github.com/Real-Thread/bsp_tricore.git`
+
+2. 进入源码目录更新子仓库:
+
+` cd bsp_tricore\`
+
+`git submodule update --init`
+
+**整个下载源码的流程如下图所示：**
+
+![git_clone](./picture/git_clone.png)
+
+## 3. 创建工程并编译
+
+以 TC264 为例：
+
+1. 使用 env 工具进入 TC264 BSP 目录，输入如下命令：
+
+` .\make_project.bat`
+
+![make_project](./picture/make_project.png)
+
+2. 打开 AURIX-Studio IDE ，如下图所示点击 import 按钮导入工程。
 
 ![step_1](./picture/step_1.png)
 
-2. 找到对应的文件夹工程目录。如下图所示：
+3. 找到对应的文件夹工程目录。如下图所示：
 
 ![step_2](./picture/step_2.png)
 
 ![step_3](./picture/step_3.png)
 
-3. 右键工程目录，点击 Set Active Project 按钮激活工程。
+4. 右键工程目录，点击 Set Active Project 按钮激活工程。
 
 ![step_4](./picture/step_4.png)
 
-4. 首次编译前需要清理一遍工程。如下图所示：
+5. 首次编译前需要清理一遍工程。如下图所示：
 
 ![step_5](./picture/step_5.png)
 
-5. 点击编译按钮进行编译。如下图所示：
+6. 点击编译按钮进行编译。如下图所示：
 
 ![step_6](./picture/step_6.png)
 
-## 3. 烧写及执行
+## 4. 烧写及执行
 
 点击下载按钮。如下图所示：
 
 ![step_7](./picture/step_7.png)
 
-### 3.1 运行结果
+### 4.1 运行结果
 
-如果编译 & 烧写无误，当复位设备后，会在串口上看到RT-Thread的启动logo信息：
+如果编译 & 烧写无误，当复位设备后，会看到板子闪灯：
 
-![log](./picture/log.png)
+![led](./picture/led.png)
 
-## 4. 许可协议
+## 5. 许可协议
 
 这是一份使用 GPLv2 及商业授权的双许可方式 BSP 代码，可以遵守 GPLv2.0 方式把这份代码链接
 后的程序源代码都开源的方式来使用，也可以联系睿赛德科技获得商业许可授权。睿赛德联系方式：
 
 邮件地址：business@rt-thread.com
 
-## 5. 注意事项！
+## 6. 注意事项！
 
  1. 暂不支持动态的创建线程，也就是不能使用 `rt_thread_create` 创建线程。
  2. 暂不支持线程删除，也就是不能使用 `rt_thread_detach` , `rt_thread_delete` 等函数。
