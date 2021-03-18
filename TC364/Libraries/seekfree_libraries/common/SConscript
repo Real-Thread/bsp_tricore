@@ -1,0 +1,15 @@
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+
+# The set of source files associated with this SConscript file.
+src = Split("""
+common.c
+SEEKFREE_PRINTF.c
+zf_assert.c
+""")
+
+group = DefineGroup('Common', src, depend = [''], CPPPATH = cwd)
+
+Return('group')

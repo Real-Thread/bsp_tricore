@@ -1,0 +1,31 @@
+import os
+import rtconfig
+Import('RTT_ROOT')
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+
+# The set of source files associated with this SConscript file.
+src     = Split("""
+SEEKFREE_18TFT.c
+SEEKFREE_7725.c
+SEEKFREE_FONT.c
+SEEKFREE_FUN.c
+SEEKFREE_ICM20602.c
+SEEKFREE_IIC.c
+SEEKFREE_IPS114_SPI.c
+SEEKFREE_IPS200_PARALLEL8.c
+SEEKFREE_L3G4200D.c
+SEEKFREE_MMA8451.c
+SEEKFREE_MPU6050.c
+SEEKFREE_MT9V03X.c
+SEEKFREE_OLED.c
+SEEKFREE_RDA5807.c
+SEEKFREE_VIRSCO.c
+SEEKFREE_WIRELESS.c
+""")
+
+group = DefineGroup('Peripheral', src, depend = [''], CPPPATH = cwd)
+
+Return('group')

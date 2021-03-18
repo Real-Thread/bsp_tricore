@@ -1,0 +1,23 @@
+# for module compiling
+import os
+from building import *
+
+# The set of source files associated with this SConscript file.
+src     = Split("""
+StdIf/IfxStdIf_DPipe.c
+StdIf/IfxStdIf_Pos.c
+StdIf/IfxStdIf_PwmHl.c
+StdIf/IfxStdIf_Timer.c
+""")
+
+cwd  = GetCurrentDir()
+CPPPATH = [cwd, cwd + '/_Utilities', cwd + '/StdIf']
+
+group = DefineGroup('CpuGeneric', src, depend = [''], CPPPATH = CPPPATH)
+
+list = os.listdir(cwd)
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        group += SConscript(os.path.join(item, 'SConscript'))
+
+Return('group')
