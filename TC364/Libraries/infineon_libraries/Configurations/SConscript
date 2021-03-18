@@ -6,6 +6,7 @@ from building import *
 # The set of source files associated with this SConscript file.
 src  = Split("""
 Ifx_Cfg_Ssw.c
+Ifx_Cfg_SswBmhd.c
 """)
 
 # get current directory

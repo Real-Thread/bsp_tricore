@@ -61,6 +61,8 @@ scons --dist
 
 ![step_6](./picture/step_6.png)
 
+7.  在工程目录下，使用命令 `scons --target=eclipse` 更新工程。
+
 ## 4. 烧写及执行
 
 点击下载按钮。如下图所示：
