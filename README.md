@@ -33,7 +33,9 @@
 
 1. 使用 env 工具进入 TC264 BSP 目录，输入如下命令：
 
-` .\make_project.bat`
+```
+scons --dist 
+```
 
 ![make_project](./picture/make_project.png)
 
