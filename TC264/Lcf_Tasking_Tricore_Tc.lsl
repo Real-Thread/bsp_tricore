@@ -433,6 +433,16 @@ derivative tc26
 		"_A8_DATA_" := sizeof(group:a8) > 0 ? addressof(group:a8) + 32k : addressof(group:a8) & 0xF0000000 + 32k;
 		"_A8_MEM" := "_A8_DATA_";
 	}
+
+    /*RT-Thread Code Section*/
+    section_layout :vtc:linear
+    {
+        group rt_thread_section (ordered, contiguous, align = 4, run_addr=mem:pfls0)
+        {
+            /* section information for RT-Thread auto initial. */
+            select  ".rti_fn.*";
+        }       
+    }
 	
 	section_layout :vtc:abs18
 	{
