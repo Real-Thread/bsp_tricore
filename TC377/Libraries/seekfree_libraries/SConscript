@@ -1,0 +1,30 @@
+import os
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+
+# The set of source files associated with this SConscript file.
+src = Split("""
+zf_ccu6_pit.c
+zf_eeprom.c
+zf_eru.c
+zf_eru_dma.c
+zf_gpio.c
+zf_gpt12.c
+zf_gtm_pwm.c
+zf_spi.c
+zf_stm_systick.c
+zf_uart.c
+zf_vadc.c
+""")
+
+group = DefineGroup('Libraries', src, depend = [''], CPPPATH = cwd)
+
+# traverse folder
+list = os.listdir(cwd)
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        group = group + SConscript(os.path.join(item, 'SConscript'))
+
+Return('group')

@@ -1,0 +1,15 @@
+import os
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+
+# The set of source files associated with this SConscript file.
+src = Split("""
+SpiIf.c
+""")
+
+CPPPATH = [cwd, cwd + '/Ccu6If']
+group = DefineGroup('If', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')

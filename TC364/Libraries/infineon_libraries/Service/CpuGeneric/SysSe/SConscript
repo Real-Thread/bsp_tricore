@@ -1,0 +1,37 @@
+import os
+from building import *
+
+# The set of source files associated with this SConscript file.
+src = Split("""
+Bsp/Assert.c
+Bsp/Bsp.c
+Comm/Ifx_Console.c
+Comm/Ifx_Shell.c
+General/Ifx_GlobalResources.c
+Math/Ifx_AngleTrkF32.c
+Math/Ifx_Cf32.c
+Math/Ifx_Crc.c
+Math/Ifx_FftF32.c
+Math/Ifx_FftF32_BitReverseTable.c
+Math/Ifx_FftF32_TwiddleTable.c
+Math/Ifx_IntegralF32.c
+Math/Ifx_LowPassPt1F32.c
+Math/Ifx_LutAtan2F32.c
+Math/Ifx_LutAtan2F32_Table.c
+Math/Ifx_LutLinearF32.c
+Math/Ifx_LutLSincosF32.c
+Math/Ifx_LutSincosF32.c
+Math/Ifx_LutSincosF32_Table.c
+Math/Ifx_RampF32.c
+Math/Ifx_WndF32_BlackmanHarrisTable.c
+Math/Ifx_WndF32_HannTable.c
+Time/Ifx_DateTime.c
+""")
+
+# get current directory
+cwd = GetCurrentDir()
+CPPPATH = [cwd, cwd + "/Bsp", cwd + '/Comm', cwd + '/General', cwd + '/Math', cwd + '/Time']
+
+group = DefineGroup('Sysse', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')

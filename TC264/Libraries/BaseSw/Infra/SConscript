@@ -1,0 +1,21 @@
+import os
+from building import *
+
+# The set of source files associated with this SConscript file.
+src = Split("""
+Platform/Tricore/Compilers/CompilerDcc.c
+Platform/Tricore/Compilers/CompilerGhs.c
+Platform/Tricore/Compilers/CompilerGnuc.c
+Platform/Tricore/Compilers/CompilerTasking.c
+""")
+
+# get current directory
+cwd = GetCurrentDir()
+
+path =  [cwd]
+path += [cwd + '/Sfr/TC26B/_Reg']
+path += [cwd + '/Platform/Tricore/Compilers']
+
+group = DefineGroup('Infra', src, depend = [''], CPPPATH = path)
+
+Return('group')

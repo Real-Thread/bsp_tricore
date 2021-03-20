@@ -1,0 +1,230 @@
+# for module compiling
+import os
+from building import *
+
+objs = []
+cwd  = GetCurrentDir()
+list = os.listdir(cwd)
+
+src = Split("""
+Asclin/Asc/IfxAsclin_Asc.c
+Asclin/Lin/IfxAsclin_Lin.c
+Asclin/Spi/IfxAsclin_Spi.c
+Asclin/Std/IfxAsclin.c
+Can/Can/IfxCan_Can.c
+Can/Std/IfxCan.c
+Ccu6/Icu/IfxCcu6_Icu.c
+Ccu6/PwmBc/IfxCcu6_PwmBc.c
+Ccu6/PwmHl/IfxCcu6_PwmHl.c
+Ccu6/Std/IfxCcu6.c
+Ccu6/Timer/IfxCcu6_Timer.c
+Ccu6/TimerWithTrigger/IfxCcu6_TimerWithTrigger.c
+Ccu6/TPwm/IfxCcu6_TPwm.c
+Convctrl/Std/IfxConvctrl.c
+Cpu/Irq/IfxCpu_Irq.c
+Cpu/Std/IfxCpu.c
+Cpu/Trap/IfxCpu_Trap.c
+Dma/Dma/IfxDma_Dma.c
+Dma/Std/IfxDma.c
+Dts/Dts/IfxDts_Dts.c
+Dts/Std/IfxDts.c
+Edsadc/Edsadc/IfxEdsadc_Edsadc.c
+Edsadc/Std/IfxEdsadc.c
+Eray/Eray/IfxEray_Eray.c
+Eray/Std/IfxEray.c
+Evadc/Adc/IfxEvadc_Adc.c
+Evadc/Std/IfxEvadc.c
+Fce/Crc/IfxFce_Crc.c
+Fce/Std/IfxFce.c
+Flash/Std/IfxFlash.c
+Geth/Eth/IfxGeth_Eth.c
+Geth/Std/IfxGeth.c
+Gpt12/IncrEnc/IfxGpt12_IncrEnc.c
+Gpt12/Std/IfxGpt12.c
+Gtm/Atom/Pwm/IfxGtm_Atom_Pwm.c
+Gtm/Atom/PwmHl/IfxGtm_Atom_PwmHl.c
+Gtm/Atom/Timer/IfxGtm_Atom_Timer.c
+Gtm/Std/IfxGtm.c
+Gtm/Std/IfxGtm_Atom.c
+Gtm/Std/IfxGtm_Cmu.c
+Gtm/Std/IfxGtm_Dpll.c
+Gtm/Std/IfxGtm_Dtm.c
+Gtm/Std/IfxGtm_Psm.c
+Gtm/Std/IfxGtm_Spe.c
+Gtm/Std/IfxGtm_Tbu.c
+Gtm/Std/IfxGtm_Tim.c
+Gtm/Std/IfxGtm_Tom.c
+Gtm/Tim/In/IfxGtm_Tim_In.c
+Gtm/Tim/Timer/IfxGtm_Tim_Timer.c
+Gtm/Tom/Pwm/IfxGtm_Tom_Pwm.c
+Gtm/Tom/PwmHl/IfxGtm_Tom_PwmHl.c
+Gtm/Tom/Timer/IfxGtm_Tom_Timer.c
+Gtm/Trig/IfxGtm_Trig.c
+Hssl/Hssl/IfxHssl_Hssl.c
+Hssl/Std/IfxHssl.c
+I2c/I2c/IfxI2c_I2c.c
+I2c/Std/IfxI2c.c
+Iom/Driver/IfxIom_Driver.c
+Iom/Iom/IfxIom_Iom.c
+Iom/Std/IfxIom.c
+Msc/Msc/IfxMsc_Msc.c
+Msc/Std/IfxMsc.c
+Mtu/Std/IfxMtu.c
+Pms/Std/IfxPmsEvr.c
+Pms/Std/IfxPmsPm.c
+Port/Io/IfxPort_Io.c
+Port/Std/IfxPort.c
+Psi5/Psi5/IfxPsi5_Psi5.c
+Psi5/Std/IfxPsi5.c
+Psi5s/Psi5s/IfxPsi5s_Psi5s.c
+Psi5s/Std/IfxPsi5s.c
+Qspi/SpiMaster/IfxQspi_SpiMaster.c
+Qspi/SpiSlave/IfxQspi_SpiSlave.c
+Qspi/Std/IfxQspi.c
+Scu/Std/IfxScuCcu.c
+Scu/Std/IfxScuEru.c
+Scu/Std/IfxScuLbist.c
+Scu/Std/IfxScuRcu.c
+Scu/Std/IfxScuWdt.c
+Sent/Sent/IfxSent_Sent.c
+Sent/Std/IfxSent.c
+Smu/Smu/IfxSmu_Smu.c
+Smu/Std/IfxSmu.c
+Smu/Std/IfxSmuStdby.c
+Src/Std/IfxSrc.c
+Stm/Std/IfxStm.c
+Stm/Timer/IfxStm_Timer.c
+_Impl/IfxAsclin_cfg.c
+_Impl/IfxCan_cfg.c
+_Impl/IfxCcu6_cfg.c
+_Impl/IfxCpu_cfg.c
+_Impl/IfxDma_cfg.c
+_Impl/IfxEray_cfg.c
+_Impl/IfxEvadc_cfg.c
+_Impl/IfxFlash_cfg.c
+_Impl/IfxGeth_cfg.c
+_Impl/IfxGtm_cfg.c
+_Impl/IfxHssl_cfg.c
+_Impl/IfxI2c_cfg.c
+_Impl/IfxMsc_cfg.c
+_Impl/IfxMtu_cfg.c
+_Impl/IfxPort_cfg.c
+_Impl/IfxPsi5_cfg.c
+_Impl/IfxQspi_cfg.c
+_Impl/IfxScu_cfg.c
+_Impl/IfxSent_cfg.c
+_Impl/IfxSmu_cfg.c
+_Impl/IfxSrc_cfg.c
+_Impl/IfxStm_cfg.c
+_Lib/DataHandling/Ifx_CircularBuffer.asm.c
+_Lib/DataHandling/Ifx_CircularBuffer.c
+_Lib/DataHandling/Ifx_Fifo.c
+_Lib/InternalMux/Ifx_InternalMux.c
+_PinMap/IfxAsclin_PinMap.c
+_PinMap/IfxCan_PinMap.c
+_PinMap/IfxCcu6_PinMap.c
+_PinMap/IfxDmu_PinMap.c
+_PinMap/IfxEdsadc_PinMap.c
+_PinMap/IfxEray_PinMap.c
+_PinMap/IfxEvadc_PinMap.c
+_PinMap/IfxGeth_PinMap.c
+_PinMap/IfxGpt12_PinMap.c
+_PinMap/IfxGtm_PinMap.c
+_PinMap/IfxI2c_PinMap.c
+_PinMap/IfxMsc_PinMap.c
+_PinMap/IfxPms_PinMap.c
+_PinMap/IfxPort_PinMap.c
+_PinMap/IfxPsi5s_PinMap.c
+_PinMap/IfxPsi5_PinMap.c
+_PinMap/IfxQspi_PinMap.c
+_PinMap/IfxScu_PinMap.c
+_PinMap/IfxSent_PinMap.c
+_PinMap/IfxSmu_PinMap.c
+""")
+
+# get current directory
+cwd = GetCurrentDir()
+path =  [cwd]
+path += [cwd + '/Asclin/Asc']
+path += [cwd + '/Asclin/Lin']
+path += [cwd + '/Asclin/Spi']
+path += [cwd + '/Asclin/Std']
+path += [cwd + '/Ccu6/Icu']
+path += [cwd + '/Ccu6/PwmBc']
+path += [cwd + '/Ccu6/PwmHl']
+path += [cwd + '/Ccu6/Std']
+path += [cwd + '/Ccu6/Timer']
+path += [cwd + '/Ccu6/TimerWithTrigger']
+path += [cwd + '/Ccu6/TPwm']
+path += [cwd + '/Cif/Cam']
+path += [cwd + '/Cif/Std']
+path += [cwd + '/Cpu/CStart']
+path += [cwd + '/Cpu/Irq']
+path += [cwd + '/Cpu/Std']
+path += [cwd + '/Cpu/Trap']
+path += [cwd + '/Dma/Dma']
+path += [cwd + '/Dma/Std']
+path += [cwd + '/Dsadc/Dsadc']
+path += [cwd + '/Dsadc/Rdc']
+path += [cwd + '/Dsadc/Std']
+path += [cwd + '/Dts/Dts']
+path += [cwd + '/Dts/Std']
+path += [cwd + '/Emem/Std']
+path += [cwd + '/Eray/Eray']
+path += [cwd + '/Eray/Std']
+path += [cwd + '/Eth/Phy_Pef7071']
+path += [cwd + '/Eth/Std']
+path += [cwd + '/Fce/Crc']
+path += [cwd + '/Fce/Std']
+path += [cwd + '/Fft/Fft']
+path += [cwd + '/Fft/Std']
+path += [cwd + '/Flash/Std']
+path += [cwd + '/Gpt12/IncrEnc']
+path += [cwd + '/Gpt12/Std']
+path += [cwd + '/Gtm/Atom/Pwm']
+path += [cwd + '/Gtm/Atom/PwmHl']
+path += [cwd + '/Gtm/Atom/Timer']
+path += [cwd + '/Gtm/Std']
+path += [cwd + '/Gtm/Tim/In']
+path += [cwd + '/Gtm/Tom/Pwm']
+path += [cwd + '/Gtm/Tom/PwmHl']
+path += [cwd + '/Gtm/Tom/Timer']
+path += [cwd + '/Gtm/Trig']
+path += [cwd + '/Hssl/Hssl']
+path += [cwd + '/Hssl/Std']
+path += [cwd + '/I2c/I2c']
+path += [cwd + '/I2c/Std']
+path += [cwd + '/Iom/Driver']
+path += [cwd + '/Iom/Std']
+path += [cwd + '/Msc/Msc']
+path += [cwd + '/Msc/Std']
+path += [cwd + '/Mtu/Std']
+path += [cwd + '/Multican/Can']
+path += [cwd + '/Multican/Std']
+path += [cwd + '/Port/Io']
+path += [cwd + '/Port/Std']
+path += [cwd + '/Psi5/Psi5']
+path += [cwd + '/Psi5/Std']
+path += [cwd + '/Psi5s/Psi5s']
+path += [cwd + '/Psi5s/Std']
+path += [cwd + '/Qspi/SpiMaster']
+path += [cwd + '/Qspi/SpiSlave']
+path += [cwd + '/Qspi/Std']
+path += [cwd + '/Scu/Std']
+path += [cwd + '/Sent/Sent']
+path += [cwd + '/Sent/Std']
+path += [cwd + '/Smu/Std']
+path += [cwd + '/Src/Std']
+path += [cwd + '/Stm/Std']
+path += [cwd + '/Stm/Timer']
+path += [cwd + '/Vadc/Adc']
+path += [cwd + '/Vadc/Std']
+path += [cwd + '/_Build']
+path += [cwd + '/_Impl']
+path += [cwd + '/_Lib/DataHandling']
+path += [cwd + '/_Lib/InternalMux']
+path += [cwd + '/_PinMap']
+
+group = DefineGroup('Tricore', src, depend = [''], CPPPATH = path)
+
+Return('group')

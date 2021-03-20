@@ -49,7 +49,7 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/rt-thread/include/libc}&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/CODE}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Libraries}&quot;"/>
                                     									
@@ -368,6 +368,60 @@
                         </toolChain>
                         					
                     </folderInfo>
+                    					
+                    <folderInfo id="com.infineon.aurix.buildsystem.managed.configuration.binary.537440773.522773621" name="/" resourcePath="libcpu/tc37x">
+                        						
+                        <toolChain id="com.infineon.aurix.buildsystem.managed.toolChain.tasking.exe.binary.296903633" name="AURIX Toolchain" superClass="com.infineon.aurix.buildsystem.managed.toolChain.tasking.exe.binary" unusedChildren="">
+                            							
+                            <option id="com.tasking.ctc.cpu.316765275.1968308972" name="Processor" superClass="com.tasking.ctc.cpu.316765275"/>
+                            							
+                            <tool id="com.infineon.aurix.buildsystem.managed.tool.c.compiler.tasking.debug.1691518751" name="TASKING C/C++ Compiler" superClass="com.infineon.aurix.buildsystem.managed.tool.c.compiler.tasking.debug.2023797438"/>
+                            							
+                            <tool id="com.infineon.aurix.buildsystem.managed.tool.c.assembler.tasking.53327845" name="TASKING Assembler" superClass="com.infineon.aurix.buildsystem.managed.tool.c.assembler.tasking.1903315946"/>
+                            							
+                            <tool id="com.infineon.aurix.buildsystem.managed.tool.c.linker.tasking.115069905" name="TASKING Linker" superClass="com.infineon.aurix.buildsystem.managed.tool.c.linker.tasking.195134534"/>
+                            							
+                            <tool id="com.infineon.aurix.buildsystem.managed.tool.printsize.tasking.1934436316" name="Print Size" superClass="com.infineon.aurix.buildsystem.managed.tool.printsize.tasking.219532605"/>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
+                    <folderInfo id="com.infineon.aurix.buildsystem.managed.configuration.binary.537440773.324113710" name="/" resourcePath="rt-thread/components">
+                        						
+                        <toolChain id="com.infineon.aurix.buildsystem.managed.toolChain.tasking.exe.binary.2040408638" name="AURIX Toolchain" superClass="com.infineon.aurix.buildsystem.managed.toolChain.tasking.exe.binary" unusedChildren="">
+                            							
+                            <option id="com.tasking.ctc.cpu.316765275.1895244053" name="Processor" superClass="com.tasking.ctc.cpu.316765275"/>
+                            							
+                            <targetPlatform archList="all" binaryParser="com.tasking.managedbuilder.TASKING_ELF" id="com.infineon.aurix.buildsystem.managed.tasking.targetPlatform" isAbstract="false" osList="all" superClass="com.infineon.aurix.buildsystem.managed.tasking.targetPlatform"/>
+                            							
+                            <tool id="com.infineon.aurix.buildsystem.managed.tool.c.compiler.tasking.debug.104666578" name="TASKING C/C++ Compiler" superClass="com.infineon.aurix.buildsystem.managed.tool.c.compiler.tasking.debug.2023797438">
+                                								
+                                <inputType id="com.infineon.aurix.buildsystem.managed.tool.c.compiler.tasking.input.cpp.727794306" name="C++" superClass="com.infineon.aurix.buildsystem.managed.tool.c.compiler.tasking.input.cpp"/>
+                                								
+                                <inputType id="com.infineon.aurix.buildsystem.managed.tool.c.compiler.tasking.input.1140929014" name="C" superClass="com.infineon.aurix.buildsystem.managed.tool.c.compiler.tasking.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.infineon.aurix.buildsystem.managed.tool.c.assembler.tasking.629402691" name="TASKING Assembler" superClass="com.infineon.aurix.buildsystem.managed.tool.c.assembler.tasking.1903315946">
+                                								
+                                <inputType id="com.infineon.aurix.buildsystem.managed.tool.c.assembler.tasking.input.839780390" superClass="com.infineon.aurix.buildsystem.managed.tool.c.assembler.tasking.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.infineon.aurix.buildsystem.managed.tool.c.linker.tasking.1762920219" name="TASKING Linker" superClass="com.infineon.aurix.buildsystem.managed.tool.c.linker.tasking.195134534"/>
+                            							
+                            <tool id="com.infineon.aurix.buildsystem.managed.tool.printsize.tasking.665819113" name="Print Size" superClass="com.infineon.aurix.buildsystem.managed.tool.printsize.tasking.219532605"/>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
+                    <sourceEntries>
+                        						
+                        <entry excluding="libcpu/tc37x|libcpu/tc26xb|rt-thread/components|rt-thread/libcpu/tricore/tc37x|rt-thread/libcpu/tricore/tc26xb|rt-thread/tools|USER/test.c|//Libraries/infineon_libraries/Configurations/Ifx_Cfg_SswBmhd.c|//rt-thread/components/cplusplus|//rt-thread/components/dfs|//rt-thread/components/drivers/audio|//rt-thread/components/drivers/can|//rt-thread/components/drivers/cputime|//rt-thread/components/drivers/hwcrypto|//rt-thread/components/drivers/hwtimer|//rt-thread/components/drivers/i2c|//rt-thread/components/drivers/misc/adc.c|//rt-thread/components/drivers/misc/dac.c|//rt-thread/components/drivers/misc/pulse_encoder.c|//rt-thread/components/drivers/misc/rt_drv_pwm.c|//rt-thread/components/drivers/misc/rt_inputcapture.c|//rt-thread/components/drivers/mtd|//rt-thread/components/drivers/phy|//rt-thread/components/drivers/pm|//rt-thread/components/drivers/rtc|//rt-thread/components/drivers/sdio|//rt-thread/components/drivers/sensors|//rt-thread/components/drivers/serial|//rt-thread/components/drivers/spi|//rt-thread/components/drivers/src/dataqueue.c|//rt-thread/components/drivers/src/pipe.c|//rt-thread/components/drivers/touch|//rt-thread/components/drivers/usb|//rt-thread/components/drivers/watchdog|//rt-thread/components/drivers/wlan|//rt-thread/components/finsh|//rt-thread/components/libc|//rt-thread/components/lwp|//rt-thread/components/net|//rt-thread/components/utilities|//rt-thread/components/vbus|//rt-thread/components/vmm|//rt-thread/libcpu/tricore/tc26xb|//rt-thread/libcpu/tricore/tc37x|//rt-thread/src/cpu.c|//rt-thread/src/mem.c|//rt-thread/src/memheap.c|//rt-thread/src/mempool.c|//rt-thread/src/signal.c|//rt-thread/src/slab.c|//rt-thread/tools" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        					
+                    </sourceEntries>
                     				
                 </configuration>
                 			
@@ -757,7 +811,21 @@
         	
     </storageModule>
     	
-    <storageModule moduleId="refreshScope"/>
+    <storageModule moduleId="refreshScope" versionNumber="2">
+        		
+        <configuration configurationName="Debug">
+            			
+            <resource resourceType="PROJECT" workspacePath="/TC364"/>
+            		
+        </configuration>
+        		
+        <configuration configurationName="Release">
+            			
+            <resource resourceType="PROJECT" workspacePath="/TC364"/>
+            		
+        </configuration>
+        	
+    </storageModule>
     	
     <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
     

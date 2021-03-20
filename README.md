@@ -33,7 +33,9 @@
 
 1. 使用 env 工具进入 TC264 BSP 目录，输入如下命令：
 
-` .\make_project.bat`
+```
+scons --dist 
+```
 
 ![make_project](./picture/make_project.png)
 
@@ -58,6 +60,8 @@
 6. 点击编译按钮进行编译。如下图所示：
 
 ![step_6](./picture/step_6.png)
+
+7.  在工程目录下，使用命令 `scons --target=eclipse` 更新工程。
 
 ## 4. 烧写及执行
 
