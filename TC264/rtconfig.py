@@ -3,13 +3,10 @@ import os
 # toolchains options
 ARCH='tricore'
 CPU='tc26xb'
-CROSS_TOOL='gcc'
+CROSS_TOOL='tasking'
 
-if os.getenv('RTT_CC'):
-	CROSS_TOOL = os.getenv('RTT_CC')
-
-if  CROSS_TOOL == 'gcc':
-	PLATFORM 	= 'gcc'
+if  CROSS_TOOL == 'tasking':
+	PLATFORM 	= 'tasking'
 	EXEC_PATH 	= 'C:/Program Files (x86)/CodeSourcery/Sourcery G++ Lite/bin'
 
 if os.getenv('RTT_EXEC_PATH'):
@@ -18,7 +15,7 @@ if os.getenv('RTT_EXEC_PATH'):
 BUILD = 'debug'
 EXEC_PATH = r"D:/software/AURIX-Studio-1.2.2/plugins/com.infineon.aurix.tools_1.2.2/build_system/tools/Compilers/Tasking_1.1r4/ctc/bin"
 
-if PLATFORM == 'gcc':
+if PLATFORM == 'tasking':
     # toolchains
     PREFIX = 'cctc'
     CC = PREFIX + ''
