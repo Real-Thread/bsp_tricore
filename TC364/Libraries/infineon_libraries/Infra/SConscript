@@ -16,8 +16,14 @@ Ssw/TC36A/Tricore/Ifx_Ssw_Tc1.c
 cwd = GetCurrentDir()
 
 path =  [cwd]
+path += [cwd + '/Sfr']
+path += [cwd + '/Sfr/TC36A']
 path += [cwd + '/Sfr/TC36A/_Reg']
+path += [cwd + '/Platform']
+path += [cwd + '/Platform/Tricore']
 path += [cwd + '/Platform/Tricore/Compilers']
+path += [cwd + '/Ssw']
+path += [cwd + '/Ssw/TC36A']
 path += [cwd + '/Ssw/TC36A/Tricore']
 
 group = DefineGroup('Infra', src, depend = [''], CPPPATH = path)

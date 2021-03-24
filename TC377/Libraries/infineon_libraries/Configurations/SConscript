@@ -13,7 +13,6 @@ Ifx_Cfg_SswBmhd.c
 cwd = GetCurrentDir()
 
 path = [cwd]
-
 group = DefineGroup('Configurations', src, depend = [''], CPPPATH = path)
 
 Return('group')

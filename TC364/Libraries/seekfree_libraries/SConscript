@@ -19,7 +19,8 @@ zf_uart.c
 zf_vadc.c
 """)
 
-group = DefineGroup('Libraries', src, depend = [''], CPPPATH = cwd)
+path = [cwd]
+group = DefineGroup('Libraries', src, depend = [''], CPPPATH = path)
 
 # traverse folder
 list = os.listdir(cwd)

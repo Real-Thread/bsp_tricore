@@ -13,7 +13,11 @@ Platform/Tricore/Compilers/CompilerTasking.c
 cwd = GetCurrentDir()
 
 path =  [cwd]
+path += [cwd + '/Sfr']
+path += [cwd + '/Sfr/TC26B']
 path += [cwd + '/Sfr/TC26B/_Reg']
+path += [cwd + '/Platform']
+path += [cwd + '/Platform/Tricore']
 path += [cwd + '/Platform/Tricore/Compilers']
 
 group = DefineGroup('Infra', src, depend = [''], CPPPATH = path)

@@ -26,13 +26,15 @@
 
 /* Memory Management */
 
+#define RT_USING_NOHEAP
+
 /* Kernel Device Object */
 
 #define RT_USING_DEVICE
 #define RT_USING_CONSOLE
 #define RT_CONSOLEBUF_SIZE 128
 #define RT_CONSOLE_DEVICE_NAME "uart1"
-#define RT_VER_NUM 0x40002
+#define RT_VER_NUM 0x40003
 
 /* RT-Thread Components */
 
@@ -52,15 +54,7 @@
 
 /* Device Drivers */
 
-#define RT_USING_DEVICE_IPC
-#define RT_PIPE_BUFSZ 512
 #define RT_USING_PIN
-
-/* Using Hardware Crypto drivers */
-
-
-/* Using WiFi */
-
 
 /* Using USB */
 
@@ -77,9 +71,6 @@
 
 
 /* light weight TCP/IP stack */
-
-
-/* Modbus master and slave stack */
 
 
 /* AT commands */
@@ -122,7 +113,13 @@
 /* system packages */
 
 
+/* Micrium: Micrium software products porting for RT-Thread */
+
+
 /* peripheral libraries and drivers */
+
+
+/* AI packages */
 
 
 /* miscellaneous packages */
@@ -130,13 +127,9 @@
 
 /* samples: kernel and components samples */
 
-/* Hardware Drivers Config */
 
-/* Onboard Peripheral Drivers */
+/* games: games run on RT-Thread console */
 
-/* On-chip Peripheral Drivers */
-
-/* Board extended module Drivers */
-
+#define SOC_TC364
 
 #endif

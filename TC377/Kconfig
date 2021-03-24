@@ -21,7 +21,7 @@ config PKGS_DIR
 source "$RTT_DIR/Kconfig"
 source "$PKGS_DIR/Kconfig"
 
-config SOC_TC364
+config SOC_TC377
     bool 
     select RT_USING_COMPONENTS_INIT
     select RT_USING_USER_MAIN

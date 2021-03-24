@@ -10,6 +10,7 @@ SEEKFREE_PRINTF.c
 zf_assert.c
 """)
 
-group = DefineGroup('Common', src, depend = [''], CPPPATH = cwd)
+path = [cwd]
+group = DefineGroup('Common', src, depend = [''], CPPPATH = path)
 
 Return('group')
