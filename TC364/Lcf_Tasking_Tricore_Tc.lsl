@@ -749,11 +749,27 @@ derivative tc36
             /*RT-Thread Code Section*/
             group
             {
-                group rt_thread_section (ordered, contiguous, align = 4, run_addr=mem:pfls0)
+                /* section information for finsh shell */
+                group rt_thread_FSymTab (ordered, contiguous, align = 4, run_addr=mem:pfls0)
                 {
-                    /* section information for RT-Thread auto initial. */
-                    select  ".rti_fn.*";
+                    select "FSymTab*";
+                    "__fsymtab_start" = "_lc_gb_rt_thread_FSymTab";
+                    "__fsymtab_end"   = "_lc_ge_rt_thread_FSymTab";
                 }
+                group rt_thread_VSymTab (ordered, contiguous, align = 4, run_addr=mem:pfls0)
+                {
+                    select "VSymTab*";
+                    "__vsymtab_start" = "_lc_gb_rt_thread_VSymTab";
+                    "__vsymtab_end"   = "_lc_ge_rt_thread_VSymTab";
+                }
+                /* section information for RT-Thread auto initial. */
+                group rt_thread_init (ordered, contiguous, align = 4, run_addr=mem:pfls0)
+                {
+                    select  ".rti_fn.*";
+                    "__rt_init_start" = "_lc_gb_rt_thread_init";
+                    "__rt_init_end"   = "_lc_ge_rt_thread_init";
+                }
+
             }            
         }
         
