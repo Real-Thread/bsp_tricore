@@ -114,17 +114,18 @@ IFX_INTERRUPT(KERNEL_YIELD, 0, 2)
 }
 
 /**
- * This function will initial STM32 board.
+ * This function will initial Tricore board.
  */
+rt_uint8_t buf[1024*20];
 void rt_hw_board_init()
 {
     IfxStm_setSuspendMode(STMs[TRICORE_CPU_ID], IfxStm_SuspendMode_hard);
-
+    rt_system_heap_init(buf, (void*)(buf + sizeof(buf)));
     /* Set-up the timer interrupt. */
     rt_hw_systick_init();
     /* USART driver initialization is open by default */
 #ifdef RT_USING_SERIAL
-    rt_hw_usart_init();
+    rt_hw_uart_init();
 #endif
 
     /* Set the shell console output device */
