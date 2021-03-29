@@ -26,6 +26,7 @@ SEEKFREE_VIRSCO.c
 SEEKFREE_WIRELESS.c
 """)
 
-group = DefineGroup('Peripheral', src, depend = [''], CPPPATH = cwd)
+path = [cwd]
+group = DefineGroup('Peripheral', src, depend = [''], CPPPATH = path)
 
 Return('group')
