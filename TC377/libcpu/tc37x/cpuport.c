@@ -125,7 +125,7 @@ void rt_hw_board_init()
     rt_hw_systick_init();
     /* USART driver initialization is open by default */
 #ifdef RT_USING_SERIAL
-    rt_hw_usart_init();
+    rt_hw_uart_init();
 #endif
 
     /* Set the shell console output device */

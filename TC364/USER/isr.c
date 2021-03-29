@@ -135,21 +135,21 @@ IFX_INTERRUPT(dma_ch5_isr, 0, ERU_DMA_INT_PRIO)
 
 
 //串口中断函数  示例
-IFX_INTERRUPT(uart0_tx_isr, 0, UART0_TX_INT_PRIO)
-{
-	enableInterrupts();//开启中断嵌套
-    IfxAsclin_Asc_isrTransmit(&uart0_handle);
-}
-IFX_INTERRUPT(uart0_rx_isr, 0, UART0_RX_INT_PRIO)
-{
-	enableInterrupts();//开启中断嵌套
-    IfxAsclin_Asc_isrReceive(&uart0_handle);
-}
-IFX_INTERRUPT(uart0_er_isr, 0, UART0_ER_INT_PRIO)
-{
-	enableInterrupts();//开启中断嵌套
-    IfxAsclin_Asc_isrError(&uart0_handle);
-}
+// IFX_INTERRUPT(uart0_tx_isr, 0, UART0_TX_INT_PRIO)
+// {
+// 	enableInterrupts();//开启中断嵌套
+//     IfxAsclin_Asc_isrTransmit(&uart0_handle);
+// }
+// IFX_INTERRUPT(uart0_rx_isr, 0, UART0_RX_INT_PRIO)
+// {
+// 	enableInterrupts();//开启中断嵌套
+//     IfxAsclin_Asc_isrReceive(&uart0_handle);
+// }
+// IFX_INTERRUPT(uart0_er_isr, 0, UART0_ER_INT_PRIO)
+// {
+// 	enableInterrupts();//开启中断嵌套
+//     IfxAsclin_Asc_isrError(&uart0_handle);
+// }
 
 //串口1默认连接到摄像头配置串口
 IFX_INTERRUPT(uart1_tx_isr, 0, UART1_TX_INT_PRIO)
