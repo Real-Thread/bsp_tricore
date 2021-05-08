@@ -155,7 +155,7 @@ derivative tc37
     {
         mau = 8;
         size = 96k;
-        type = ram;
+        type = ram; 
         map (dest=bus:tc2:fpi_bus, dest_offset=0xd0000000, size=96k, priority=8);
         map (dest=bus:sri, dest_offset=0x50000000, size=96k);
     }
@@ -539,27 +539,18 @@ derivative tc37
             {
                 select "(.zdata.zdata_cpu2|.zdata.zdata_cpu2.*)";
                 select "(.zbss.zbss_cpu2|.zbss.zbss_cpu2.*)";
-                select ".bss.cpu2_dsram";
-                select ".data.cpu2_dsram";
-                select ".zdata.cpu2_dsram";
             }
             
             group (ordered, contiguous, align = 4, attributes=rw, run_addr = mem:dsram1)
             {
                 select "(.zdata.zdata_cpu1|.zdata.zdata_cpu1.*)";
                 select "(.zbss.zbss_cpu1|.zbss.zbss_cpu1.*)";
-                select ".bss.cpu1_dsram";
-                select ".data.cpu1_dsram";
-                select ".zdata.cpu1_dsram";
             }
             
             group (ordered, contiguous, align = 4, attributes=rw, run_addr = mem:dsram0)
             {
                 select "(.zdata.zdata_cpu0|.zdata.zdata_cpu0.*)";
                 select "(.zbss.zbss_cpu0|.zbss.zbss_cpu0.*)";
-                select ".bss.cpu0_dsram";
-                select ".data.cpu0_dsram";
-                select ".zdata.cpu0_dsram";
             }
             
             group (ordered, attributes=rw, run_addr = mem:cpu0_dlmu)
@@ -727,6 +718,9 @@ derivative tc37
                     select ".bss.Ifx_Ssw_Tc2.*";
                     select ".bss.Cpu2_Main.*";
                     select "(.bss.bss_cpu2|.bss.bss_cpu2.*)";
+                    select ".bss.cpu2_dsram|.bss.cpu2_dsram.*";
+                    select ".data.cpu2_dsram|.data.cpu2_dsram.*";
+                    select ".zdata.cpu2_dsram|.zdata.cpu2_dsram.*";
                 }
                 group (ordered, attributes=rw, run_addr=mem:dsram1)
                 {
@@ -736,6 +730,9 @@ derivative tc37
                     select ".bss.Ifx_Ssw_Tc1.*";
                     select ".bss.Cpu1_Main.*";
                     select "(.bss.bss_cpu1|.bss.bss_cpu1.*)";
+                    select ".bss.cpu1_dsram|.bss.cpu1_dsram.*";
+                    select ".data.cpu1_dsram|.data.cpu1_dsram.*";
+                    select ".zdata.cpu1_dsram|.zdata.cpu1_dsram.*";
                 }
                 group (ordered, attributes=rw, run_addr=mem:dsram0)
                 {
@@ -745,6 +742,9 @@ derivative tc37
                     select ".bss.Ifx_Ssw_Tc0.*";
                     select ".bss.Cpu0_Main.*";
                     select "(.bss.bss_cpu0|.bss.bss_cpu0.*)";
+                    select ".bss.cpu0_dsram|.bss.cpu0_dsram.*";
+                    select ".data.cpu0_dsram|.data.cpu0_dsram.*";
+                    select ".zdata.cpu0_dsram|.zdata.cpu0_dsram.*";
                 }
             }
 
