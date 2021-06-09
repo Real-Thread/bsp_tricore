@@ -32,3 +32,10 @@ if PLATFORM == 'tasking':
     LFLAGS = DEVICE + ' - lrt - lfp_fpu - lcs_fpu - Wl - Oc - Wl - OL - Wl - Ot - Wl - Ox - Wl - Oy - Wl - -map - file = "TC364.map" - Wl - mc - Wl - mf - Wl - mi - Wl - mk - Wl - ml - Wl - mm - Wl - md - Wl - mr - Wl - mu - -no - warnings = -Wl - -error - limit = 42 - -strict - -nachronisms - -force - c + + -Ctc36x - o rtthread.elf - Wl - o rtthread.hex:IHEX - -lsl - core = vtc - -lsl - file =../ Lcf_Tasking_Tricore_Tc.lsl $(OBJS)'
 
     POST_ACTION = OBJCPY + 'rtthread.elf\n'
+
+
+def dist_handle(BSP_ROOT, dist_dir):
+    import shutil
+    src = os.path.join(BSP_ROOT, "../libcpu")
+    dst = os.path.join(dist_dir, "libcpu")
+    shutil.copytree(src, dst)

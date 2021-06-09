@@ -62,9 +62,6 @@
 /** \brief Configuration for CpuX enable.
  *
  */
-void tricore_trap_yield_for_task( int iTrapIdentification );
-
-#define IFX_CFG_CPU_TRAP_SYSCALL_CPU0_HOOK(trapInfo) tricore_trap_yield_for_task((trapInfo).tId)
 
 #ifndef IFX_CFG_CPU_TRAP_TSR_HOOK
 #   define IFX_CFG_CPU_TRAP_TSR_HOOK(trapWatch)          /**< By default macro is empty*/
