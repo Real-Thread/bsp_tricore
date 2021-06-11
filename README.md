@@ -53,19 +53,23 @@ scons --dist
 
 ![step_4](./picture/step_4.png)
 
-5. 首次编译前需要清理一遍工程。如下图所示：
+5. 点击全部编译按钮进行编译。（第一次编译必须选择全部编译！！！）如下图所示：
 
-![step_5](./picture/step_5.png)
-
-6. 点击编译按钮进行编译。如下图所示：
-
-![step_6](./picture/step_6.png)
-
-7.  在工程目录下，使用命令 `scons --target=eclipse` 更新工程。
+![image-20210611133931662](./picture/step_8.png)
 
 ## 4. 烧写及执行
 
-点击下载按钮。如下图所示：
+由于工程不支持增量编译，所以直接点击烧录按键会报错。需要先配置工程，当选择增量编译时，不重新生成 makefile 文件,如下图所示：
+
+1. 点击工程配置
+
+![image-20210611134424937](.\picture\step_9.png)
+
+2. 配置关闭自动生成 makefiles 选项，并配置正确的 build 路径。点击应用并关闭。
+
+![image-20210611134949200](picture/step_10.png)
+
+3. 点击下载按钮。如下图所示：
 
 ![step_7](./picture/step_7.png)
 
@@ -84,5 +88,8 @@ scons --dist
 
 ## 6. 注意事项！
 
- 1. 暂不支持动态的创建线程，也就是不能使用 `rt_thread_create` 创建线程。
- 2. 暂不支持线程删除，也就是不能使用 `rt_thread_detach` , `rt_thread_delete` 等函数。
+ 1. 当前工程源码组织形式使用的 scons，添加新的源码参考 scons 使用文档： https://www.rt-thread.org/document/site/#/development-tools/scons/scons
+
+在 scons 中添加了新的源码之后，需要在工程目录下，使用命令 `scons --target=eclipse` 更新工程。然后在工程配置里重新勾选上自动生成 makefiles 文件选项，才可以重新编译。
+
+2. 不支持增量编译。
