@@ -51,6 +51,6 @@
 /*********************************************************************************************************************/
 /*---------------------------------Configuration for Trap Hook Functions' Extensions---------------------------------*/
 /*********************************************************************************************************************/
-/* #define IFX_CFG_EXTEND_TRAP_HOOKS */ /* Decomment this line if the project needs to extend trap hook functions */
+#define IFX_CFG_EXTEND_TRAP_HOOKS  /* Decomment this line if the project needs to extend trap hook functions */
 
 #endif /* IFX_CFG_H */
