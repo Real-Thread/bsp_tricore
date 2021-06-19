@@ -37,8 +37,8 @@
  * 2020-07-29     Meco Man     fix thread->event_set/event_info when received an
  *                             event without pending
  * 2020-10-11     Meco Man     add value overflow-check code
- * 2021-01-03     Meco Man     implement rt_mb_urgent()
- * 2021-05-30     Meco Man     implement rt_mutex_trytake()
+ * 2021-01-03     Meco Man     add rt_mb_urgent()
+ * 2021-01-20     hupu         fix priority inversion bug of mutex
  */
 
 #include <rtthread.h>
@@ -124,7 +124,6 @@ rt_inline rt_err_t rt_ipc_list_suspend(rt_list_t        *list,
         break;
 
     default:
-        RT_ASSERT(0);
         break;
     }
 
@@ -191,6 +190,31 @@ rt_inline rt_err_t rt_ipc_list_resume_all(rt_list_t *list)
     }
 
     return RT_EOK;
+}
+
+/**
+ * This function will get the highest priority from the specified
+ * list of threads
+ *
+ * @param list of the threads
+ *
+ * @return the highest priority
+ */
+rt_uint8_t rt_ipc_get_highest_priority(rt_list_t *list)
+{
+    struct rt_list_node *n;
+    struct rt_thread *sthread;
+    rt_uint8_t priority = RT_THREAD_PRIORITY_MAX - 1;
+
+    for (n = list->next; n != list; n = n->next)
+    {
+        sthread = rt_list_entry(n, struct rt_thread, tlist);
+
+        priority = priority < sthread->current_priority ?
+                    priority :
+                    sthread->current_priority;
+    }
+    return priority;
 }
 
 #ifdef RT_USING_SEMAPHORE
@@ -427,7 +451,7 @@ RTM_EXPORT(rt_sem_take);
  */
 rt_err_t rt_sem_trytake(rt_sem_t sem)
 {
-    return rt_sem_take(sem, RT_WAITING_NO);
+    return rt_sem_take(sem, 0);
 }
 RTM_EXPORT(rt_sem_trytake);
 
@@ -819,19 +843,6 @@ __again:
 RTM_EXPORT(rt_mutex_take);
 
 /**
- * This function will try to take a mutex and immediately return
- *
- * @param mutex the mutex object
- *
- * @return the error code
- */
-rt_err_t rt_mutex_trytake(rt_mutex_t mutex)
-{
-    return rt_mutex_take(mutex, RT_WAITING_NO);
-}
-RTM_EXPORT(rt_mutex_trytake);
-
-/**
  * This function will release a mutex, if there are threads suspended on mutex,
  * it will be waked up.
  *
@@ -844,6 +855,7 @@ rt_err_t rt_mutex_release(rt_mutex_t mutex)
     register rt_base_t temp;
     struct rt_thread *thread;
     rt_bool_t need_schedule;
+    rt_uint8_t max_priority_in_queue = RT_THREAD_PRIORITY_MAX - 1;
 
     /* parameter check */
     RT_ASSERT(mutex != RT_NULL);
@@ -904,6 +916,21 @@ rt_err_t rt_mutex_release(rt_mutex_t mutex)
             /* set new owner and priority */
             mutex->owner             = thread;
             mutex->original_priority = thread->current_priority;
+
+            /* Priority adjustment occurs only when the following conditions
+             * are met simultaneously:
+             * 1.The type of mutex is RT_IPC_FLAG_FIFO;
+             * 2.The priority of the thread to be resumed is not equal to the
+             *   highest priority in the queue;
+             */
+            max_priority_in_queue = rt_ipc_get_highest_priority(&mutex->parent.suspend_thread);
+            if (mutex->parent.parent.flag == RT_IPC_FLAG_FIFO &&
+                thread->current_priority != max_priority_in_queue)
+            {
+                rt_thread_control(thread,
+                        RT_THREAD_CTRL_CHANGE_PRIORITY,
+                        &(max_priority_in_queue));
+            }
 
             if(mutex->hold < RT_MUTEX_HOLD_MAX)
             {

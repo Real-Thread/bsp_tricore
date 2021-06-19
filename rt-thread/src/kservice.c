@@ -922,7 +922,7 @@ rt_int32_t rt_vsnprintf(char       *buf,
             s = va_arg(args, char *);
             if (!s) s = "(NULL)";
 
-            for (len = 0; (len != field_width) && (s[len] != '\0'); len++);
+            len = rt_strlen(s);
 #ifdef RT_PRINTF_PRECISION
             if (precision > 0 && len > precision) len = precision;
 #endif
@@ -1153,10 +1153,21 @@ rt_device_t rt_console_set_device(const char *name)
 }
 RTM_EXPORT(rt_console_set_device);
 #endif
-
+#include "zf_uart.h"
 RT_WEAK void rt_hw_console_output(const char *str)
 {
-    /* empty console output */
+    /*console output test version by crazt*/
+    rt_size_t i = 0, size = 0;
+    char a = '\r';
+    size = rt_strlen(str);
+    for (i = 0; i < size; i++)
+    {
+    if (*(str + i) == '\n')
+    {
+    uart_putchar(UART_0, a);
+    }
+    uart_putchar(UART_0, str[i]);
+    }
 }
 RTM_EXPORT(rt_hw_console_output);
 

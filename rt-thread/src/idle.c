@@ -22,27 +22,27 @@
 
 #ifdef RT_USING_MODULE
 #include <dlmodule.h>
-#endif /* RT_USING_MODULE */
+#endif
 
-#ifdef RT_USING_HOOK
+#if defined (RT_USING_HOOK)
 #ifndef RT_USING_IDLE_HOOK
 #define RT_USING_IDLE_HOOK
-#endif /* RT_USING_IDLE_HOOK */
-#endif /* RT_USING_HOOK */
+#endif
+#endif
 
 #ifndef IDLE_THREAD_STACK_SIZE
 #if defined (RT_USING_IDLE_HOOK) || defined(RT_USING_HEAP)
 #define IDLE_THREAD_STACK_SIZE  256
 #else
 #define IDLE_THREAD_STACK_SIZE  128
-#endif /* (RT_USING_IDLE_HOOK) || defined(RT_USING_HEAP) */
-#endif /* IDLE_THREAD_STACK_SIZE */
+#endif
+#endif
 
 #ifdef RT_USING_SMP
 #define _CPUS_NR                RT_CPUS_NR
 #else
 #define _CPUS_NR                1
-#endif /* RT_USING_SMP */
+#endif
 
 extern rt_list_t rt_thread_defunct;
 
@@ -53,7 +53,7 @@ static rt_uint8_t rt_thread_stack[_CPUS_NR][IDLE_THREAD_STACK_SIZE];
 #ifdef RT_USING_IDLE_HOOK
 #ifndef RT_IDLE_HOOK_LIST_SIZE
 #define RT_IDLE_HOOK_LIST_SIZE  4
-#endif /* RT_IDLE_HOOK_LIST_SIZE */
+#endif
 
 static void (*idle_hook_list[RT_IDLE_HOOK_LIST_SIZE])(void);
 
@@ -125,9 +125,8 @@ rt_err_t rt_thread_idle_delhook(void (*hook)(void))
     return ret;
 }
 
-#endif /* RT_USING_IDLE_HOOK */
+#endif
 
-#ifdef RT_USING_HEAP
 /* Return whether there is defunctional thread to be deleted. */
 rt_inline int _has_defunct_thread(void)
 {
@@ -141,7 +140,6 @@ rt_inline int _has_defunct_thread(void)
 
     return l->next != l;
 }
-#endif /* RT_USING_HEAP */
 
 /**
  * @ingroup Thread
@@ -176,13 +174,17 @@ void rt_thread_idle_excute(void)
                 tlist);
         /* remove defunct thread */
         rt_list_remove(&(thread->tlist));
+
+        /* remove thread tcb */
+//        thread->sp
+
         /* release thread's stack */
         RT_KERNEL_FREE(thread->stack_addr);
         /* delete thread object */
         rt_object_delete((rt_object_t)thread);
         rt_hw_interrupt_enable(lock);
     }
-#endif /* RT_USING_HEAP */
+#endif
 }
 
 extern void rt_system_power_manager(void);
@@ -196,28 +198,26 @@ static void rt_thread_idle_entry(void *parameter)
             rt_hw_secondary_cpu_idle_exec();
         }
     }
-#endif /* RT_USING_SMP */
+#endif
 
     while (1)
     {
 #ifdef RT_USING_IDLE_HOOK
         rt_size_t i;
-        void (*idle_hook)(void);
 
-        for (i = 0; i < RT_IDLE_HOOK_LIST_SIZE; i++)
+         for (i = 0; i < RT_IDLE_HOOK_LIST_SIZE; i++)
         {
-            idle_hook = idle_hook_list[i];
-            if (idle_hook != RT_NULL)
+            if (idle_hook_list[i] != RT_NULL)
             {
-                idle_hook();
+                idle_hook_list[i]();
             }
         }
-#endif /* RT_USING_IDLE_HOOK */
+#endif
 
         rt_thread_idle_excute();
 #ifdef RT_USING_PM
         rt_system_power_manager();
-#endif /* RT_USING_PM */
+#endif
     }
 }
 
@@ -246,7 +246,7 @@ void rt_thread_idle_init(void)
                 32);
 #ifdef RT_USING_SMP
         rt_thread_control(&idle[i], RT_THREAD_CTRL_BIND_CPU, (void*)i);
-#endif /* RT_USING_SMP */
+#endif
         /* startup */
         rt_thread_startup(&idle[i]);
     }
@@ -264,7 +264,7 @@ rt_thread_t rt_thread_idle_gethandler(void)
     register int id = rt_hw_cpu_id();
 #else
     register int id = 0;
-#endif /* RT_USING_SMP */
+#endif
 
     return (rt_thread_t)(&idle[id]);
 }

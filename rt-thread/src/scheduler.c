@@ -404,7 +404,7 @@ __exit:
 #else
 /**
  * This function will perform one schedule. It will select one thread
- * with the highest priority level, and switch to it immediately.
+ * with the highest priority level, then switch to it.
  */
 void rt_schedule(void)
 {
