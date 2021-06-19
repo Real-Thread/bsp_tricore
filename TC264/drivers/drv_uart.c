@@ -1,11 +1,10 @@
 /*
- * Copyright (c) 2006-2021, RT-Thread Development Team
- *
- * SPDX-License-Identifier: Apache-2.0
+ * Copyright (c) 2011-2021, Shanghai Real-Thread Electronic Technology Co.,Ltd
  *
  * Change Logs:
  * Date           Author       Notes
  * 2021-03-26     crazt        first version
+ * 2021-05-31     wanghaijing  support poll mode
  */
 
 #include <rthw.h>
@@ -18,9 +17,9 @@
 #include "ifxAsclin_Asc.h"
 
 /* Communication parameters */
-#define ISR_PRIORITY_ASCLIN_TX      8                                       /* Priority for interrupt ISR Transmit  */
+#define ISR_PRIORITY_ASCLIN_TX      0                                       /* Priority for interrupt ISR Transmit  */
 #define ISR_PRIORITY_ASCLIN_RX      4                                       /* Priority for interrupt ISR Receive   */
-#define ISR_PRIORITY_ASCLIN_ER      12                                      /* Priority for interrupt ISR Errors    */
+#define ISR_PRIORITY_ASCLIN_ER      5                                       /* Priority for interrupt ISR Errors    */
 #define ASC_TX_BUFFER_SIZE          256                                     /* Define the TX buffer size in byte    */
 #define ASC_RX_BUFFER_SIZE          256                                     /* Define the RX buffer size in byte    */
 #define ASC_BAUDRATE                115200                                  /* Define the UART baud rate            */
@@ -32,8 +31,8 @@ static IfxAsclin_Asc   rt_asclin;                                           /* A
  * 8 more bytes have to be added to ensure a proper circular buffer handling independent from
  * the address to which the buffers have been located.
  */
-rt_uint8_t TC_UartTxBuffer[ASC_TX_BUFFER_SIZE + sizeof(Ifx_Fifo) + 8];
-rt_uint8_t TC_UartRxBuffer[ASC_RX_BUFFER_SIZE + sizeof(Ifx_Fifo) + 8];
+rt_uint8_t tc_uart_tx_buffer[ASC_TX_BUFFER_SIZE + sizeof(Ifx_Fifo) + 8];
+rt_uint8_t tc_uart_rx_buffer[ASC_RX_BUFFER_SIZE + sizeof(Ifx_Fifo) + 8];
 
 
 struct tc_uart_dev
@@ -50,35 +49,47 @@ static struct tc_uart_dev uart0_dev;
  */
 void tc_uart_tx_isr(void)
 {
-    rt_interrupt_enter();
     if(!IfxAsclin_Asc_getSendCount(&rt_asclin))
     {
         rt_hw_serial_isr(&uart0_dev.parent, RT_SERIAL_EVENT_TX_DONE);
     }
-    rt_interrupt_leave();
 }
+
 void tc_uart_rx_isr(void)
 {
-    rt_interrupt_enter();
     if (IfxAsclin_Asc_getReadCount(&rt_asclin))
     {
         rt_hw_serial_isr(&uart0_dev.parent, RT_SERIAL_EVENT_RX_IND);
     }
-    rt_interrupt_leave();
 }
-IFX_INTERRUPT(asclin0TxISR, 0, ISR_PRIORITY_ASCLIN_TX)
+
+IFX_INTERRUPT(asclin0_tx_handler, 0, ISR_PRIORITY_ASCLIN_TX)
 {
+    rt_interrupt_enter();
+
     IfxAsclin_Asc_isrTransmit(&rt_asclin);
     tc_uart_tx_isr();
+
+    rt_interrupt_leave();
 }
-IFX_INTERRUPT(asclin0RxISR, 0, ISR_PRIORITY_ASCLIN_RX)
+
+IFX_INTERRUPT(asclin0_rx_handler, 0, ISR_PRIORITY_ASCLIN_RX)
 {
+    rt_interrupt_enter();
+
     IfxAsclin_Asc_isrReceive(&rt_asclin);
     tc_uart_rx_isr();
+
+    rt_interrupt_leave();
 }
-IFX_INTERRUPT(asclin0ErISR, 0, ISR_PRIORITY_ASCLIN_ER)
+
+IFX_INTERRUPT(asclin0_error_handler, 0, ISR_PRIORITY_ASCLIN_ER)
 {
+    rt_interrupt_enter();
+
     IfxAsclin_Asc_isrError(&rt_asclin);
+
+    rt_interrupt_leave();
 }
 
 /*
@@ -96,9 +107,17 @@ static rt_err_t tc_uart_control(struct rt_serial_device *serial, int cmd, void *
 
 static int tc_uart_putc(struct rt_serial_device *serial, char c)
 {
-    Ifx_SizeT count = 1;
-    (void)IfxAsclin_Asc_write(&rt_asclin, &c, &count, TIME_INFINITE);
-    return RT_EOK;
+    volatile Ifx_ASCLIN_TXDATA *txData = (Ifx_ASCLIN_TXDATA *)&rt_asclin.asclin->TXDATA.U;
+
+    txData->U = c;
+
+    volatile Ifx_ASCLIN_FLAGS  *tx_flag = (Ifx_ASCLIN_FLAGS *)&rt_asclin.asclin->FLAGS;
+    while (tx_flag->B.TC == FALSE);
+
+    Ifx_ASCLIN_FLAGSCLEAR  *tc_flag = (Ifx_ASCLIN_FLAGSCLEAR *)&rt_asclin.asclin->FLAGSCLEAR;
+    tc_flag->B.TCC = 1;
+
+    return 1;
 }
 
 static int tc_uart_getc(struct rt_serial_device *serial)
@@ -159,10 +178,10 @@ int rt_hw_uart_init(void)
     ascConf.pins = &pins;
 
     /* FIFO buffers configuration */
-    ascConf.txBuffer     = TC_UartTxBuffer;                 /* Set the transmission buffer                          */
-    ascConf.txBufferSize = ASC_TX_BUFFER_SIZE;              /* Set the transmission buffer size                     */
-    ascConf.rxBuffer     = TC_UartRxBuffer;                 /* Set the receiving buffer                             */
-    ascConf.rxBufferSize = ASC_RX_BUFFER_SIZE;              /* Set the receiving buffer size                        */
+//    ascConf.txBuffer     = tc_uart_tx_buffer;               /* Set the transmission buffer                          */
+//    ascConf.txBufferSize = ASC_TX_BUFFER_SIZE;              /* Set the transmission buffer size                     */
+    ascConf.rxBuffer     = tc_uart_rx_buffer;                 /* Set the receiving buffer                             */
+    ascConf.rxBufferSize = ASC_RX_BUFFER_SIZE;                /* Set the receiving buffer size                        */
 
     /* Init ASCLIN module */
     IfxAsclin_Asc_initModule(&rt_asclin, &ascConf);          /* Initialize the module with the given configuration   */
@@ -178,6 +197,7 @@ int rt_hw_uart_init(void)
                                 "uart0",
                                 RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX,
                                 &uart0_dev);
+
     return ret;
 }
 //INIT_DEVICE_EXPORT(rt_hw_uart_init);
