@@ -2,7 +2,7 @@ import os
 
 # toolchains options
 ARCH='tricore'
-CPU='tc26xb'
+CPU='tc26x'
 CROSS_TOOL='tasking'
 
 if  CROSS_TOOL == 'tasking':
@@ -36,6 +36,14 @@ if PLATFORM == 'tasking':
 
 def dist_handle(BSP_ROOT, dist_dir):
     import shutil
-    src = os.path.join(BSP_ROOT, "../libcpu")
-    dst = os.path.join(dist_dir, "libcpu")
+    if CPU == 'tc26x':
+        src = os.path.join(BSP_ROOT, "../libcpu/tc26x")
+        dst = os.path.join(dist_dir, "libcpu")
+    if CPU == 'tc36x':
+        src = os.path.join(BSP_ROOT, "../libcpu/tc36x")
+        dst = os.path.join(dist_dir, "libcpu")
+    if CPU == 'tc37x':
+        src = os.path.join(BSP_ROOT, "../libcpu/tc37x")
+        dst = os.path.join(dist_dir, "libcpu")
+        
     shutil.copytree(src, dst)
