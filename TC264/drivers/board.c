@@ -14,6 +14,7 @@
 #define SERVICE_REQUEST_PRIO 1
 static volatile sint32 osticks = 0;
 static volatile IfxStm_CompareConfig g_STM0Conf;
+static volatile Ifx_SRC_SRCR *const GPSR[2] = {&SRC_GPSR_GPSR0_SR0, &SRC_GPSR_GPSR1_SR0};
 
 void rt_hw_systick_init(void)
 {
@@ -27,6 +28,7 @@ void rt_hw_systick_init(void)
                                                              * interrupt for the first time                                 */
     IfxStm_initCompare(BSP_DEFAULT_TIMER, &g_STM0Conf);      /* Initialize the STM with the user configuration               */
     IfxStm_updateCompare(BSP_DEFAULT_TIMER, g_STM0Conf.comparator, osticks + IfxStm_getLower(BSP_DEFAULT_TIMER));
+    IfxStm_setSuspendMode(BSP_DEFAULT_TIMER, IfxStm_SuspendMode_hard);
 }
 
 IFX_INTERRUPT(system_tick_handler, 0, SYSTICK_PRIO)
@@ -69,8 +71,10 @@ void rt_hw_board_init()
     rt_components_board_init();
 #endif
 
-    IfxSrc_init(&SRC_GPSR_GPSR0_SR0, IfxSrc_Tos_cpu0, SERVICE_REQUEST_PRIO);
-    IfxSrc_enable(&SRC_GPSR_GPSR0_SR0);
+    // Sets the service request register
+    GPSR[0]->B.TOS =  IfxSrc_Tos_cpu0;
+    GPSR[0]->B.SRPN =  SERVICE_REQUEST_PRIO; // Priority
+    GPSR[0]->B.SRE =  1;                     // Service Request Enable
 }
 
 
