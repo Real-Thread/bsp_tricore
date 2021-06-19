@@ -323,23 +323,23 @@ rt_err_t rt_timer_start(rt_timer_t timer)
 
     /* timer check */
     RT_ASSERT(timer != RT_NULL);
-    RT_ASSERT(rt_object_get_type(&timer->parent) == RT_Object_Class_Timer); // 检查启动是不是定时器的类型
+    RT_ASSERT(rt_object_get_type(&timer->parent) == RT_Object_Class_Timer); 
 
     /* stop timer firstly */
-    level = rt_hw_interrupt_disable(); // 关中断
+    level = rt_hw_interrupt_disable(); 
     /* remove timer from list */
-    _rt_timer_remove(timer); // 从列表中删除定时器
+    _rt_timer_remove(timer); 
     /* change status of timer */
-    timer->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED; // 设置定时器为未激活状态
+    timer->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED; 
 
-    RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&(timer->parent))); // 执行勾子函数
+    RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&(timer->parent))); 
 
     /*
      * get timeout tick,
      * the max timeout tick shall not great than RT_TICK_MAX/2
      */
-    RT_ASSERT(timer->init_tick < RT_TICK_MAX / 2);// 数值检查
-    timer->timeout_tick = rt_tick_get() + timer->init_tick; // 设置超时的数值
+    RT_ASSERT(timer->init_tick < RT_TICK_MAX / 2);
+    timer->timeout_tick = rt_tick_get() + timer->init_tick; 
 
 #ifdef RT_USING_TIMER_SOFT
     if (timer->parent.flag & RT_TIMER_FLAG_SOFT_TIMER)
@@ -351,20 +351,20 @@ rt_err_t rt_timer_start(rt_timer_t timer)
 #endif
     {
         /* insert timer to system timer list */
-        timer_list = rt_timer_list; // 把 rt_timer_list 的值给到 timer_list
+        timer_list = rt_timer_list; 
     }
 
-    row_head[0]  = &timer_list[0]; // 拿到第一个节点
+    row_head[0]  = &timer_list[0]; 
     for (row_lvl = 0; row_lvl < RT_TIMER_SKIP_LIST_LEVEL; row_lvl++)
     {
         for (; row_head[row_lvl] != timer_list[row_lvl].prev;
              row_head[row_lvl]  = row_head[row_lvl]->next)
         {
             struct rt_timer *t;
-            rt_list_t *p = row_head[row_lvl]->next; // 找到下一个节点
+            rt_list_t *p = row_head[row_lvl]->next; 
 
             /* fix up the entry pointer */
-            t = rt_list_entry(p, struct rt_timer, row[row_lvl]); // 获取到定时器的句柄
+            t = rt_list_entry(p, struct rt_timer, row[row_lvl]); 
 
             /* If we have two timers that timeout at the same time, it's
              * preferred that the timer inserted early get called early.
