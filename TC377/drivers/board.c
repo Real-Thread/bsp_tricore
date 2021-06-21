@@ -7,8 +7,8 @@
 #include <rthw.h>
 #include <rtthread.h>
 
-//extern void __bss_end__[];
-//extern void _lc_ub_heap[];
+extern void __bss_end__[];
+extern void _lc_ub_heap[];
 
 #define SYSTICK_PRIO 2
 #define SERVICE_REQUEST_PRIO 1
@@ -50,11 +50,11 @@ IFX_INTERRUPT(system_tick_handler, 0, SYSTICK_PRIO)
 /**
  * This function will initial Tricore board.
  */
-rt_uint8_t buf[1024*20];
+// rt_uint8_t buf[1024*20];
 void rt_hw_board_init()
 {
-//    rt_system_heap_init(__bss_end__, _lc_ub_heap);
-    rt_system_heap_init(buf, (void*)(buf + sizeof(buf)));
+    rt_system_heap_init(__bss_end__, _lc_ub_heap);
+    // rt_system_heap_init(buf, (void*)(buf + sizeof(buf)));
 
     rt_hw_systick_init();
 

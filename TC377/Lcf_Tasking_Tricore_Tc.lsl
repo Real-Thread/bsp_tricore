@@ -807,6 +807,7 @@ derivative tc37
             {
                 select "(.data|.data.*)";
                 select "(.bss|.bss.*)";
+                "__bss_end__"    = "_lc_ge_data";
             }
         }
         
