@@ -323,23 +323,23 @@ rt_err_t rt_timer_start(rt_timer_t timer)
 
     /* timer check */
     RT_ASSERT(timer != RT_NULL);
-    RT_ASSERT(rt_object_get_type(&timer->parent) == RT_Object_Class_Timer);
+    RT_ASSERT(rt_object_get_type(&timer->parent) == RT_Object_Class_Timer); 
 
     /* stop timer firstly */
-    level = rt_hw_interrupt_disable();
+    level = rt_hw_interrupt_disable(); 
     /* remove timer from list */
-    _rt_timer_remove(timer);
+    _rt_timer_remove(timer); 
     /* change status of timer */
-    timer->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+    timer->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED; 
 
-    RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&(timer->parent)));
+    RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&(timer->parent))); 
 
     /*
      * get timeout tick,
      * the max timeout tick shall not great than RT_TICK_MAX/2
      */
     RT_ASSERT(timer->init_tick < RT_TICK_MAX / 2);
-    timer->timeout_tick = rt_tick_get() + timer->init_tick;
+    timer->timeout_tick = rt_tick_get() + timer->init_tick; 
 
 #ifdef RT_USING_TIMER_SOFT
     if (timer->parent.flag & RT_TIMER_FLAG_SOFT_TIMER)
@@ -351,20 +351,20 @@ rt_err_t rt_timer_start(rt_timer_t timer)
 #endif
     {
         /* insert timer to system timer list */
-        timer_list = rt_timer_list;
+        timer_list = rt_timer_list; 
     }
 
-    row_head[0]  = &timer_list[0];
+    row_head[0]  = &timer_list[0]; 
     for (row_lvl = 0; row_lvl < RT_TIMER_SKIP_LIST_LEVEL; row_lvl++)
     {
         for (; row_head[row_lvl] != timer_list[row_lvl].prev;
              row_head[row_lvl]  = row_head[row_lvl]->next)
         {
             struct rt_timer *t;
-            rt_list_t *p = row_head[row_lvl]->next;
+            rt_list_t *p = row_head[row_lvl]->next; 
 
             /* fix up the entry pointer */
-            t = rt_list_entry(p, struct rt_timer, row[row_lvl]);
+            t = rt_list_entry(p, struct rt_timer, row[row_lvl]); 
 
             /* If we have two timers that timeout at the same time, it's
              * preferred that the timer inserted early get called early.
@@ -531,16 +531,14 @@ void rt_timer_check(void)
     struct rt_timer *t;
     rt_tick_t current_tick;
     register rt_base_t level;
-    rt_list_t list;
-
-    rt_list_init(&list);
+    rt_list_t list = RT_LIST_OBJECT_INIT(list);
 
     RT_DEBUG_LOG(RT_DEBUG_TIMER, ("timer check enter\n"));
 
-    current_tick = rt_tick_get();
+    current_tick = rt_tick_get(); // 获取当前的 ticK
 
     /* disable interrupt */
-    level = rt_hw_interrupt_disable();
+    level = rt_hw_interrupt_disable(); // 关中断
 
     while (!rt_list_isempty(&rt_timer_list[RT_TIMER_SKIP_LIST_LEVEL - 1]))
     {
@@ -615,9 +613,7 @@ void rt_soft_timer_check(void)
     rt_tick_t current_tick;
     struct rt_timer *t;
     register rt_base_t level;
-    rt_list_t list;
-
-    rt_list_init(&list);
+    rt_list_t list = RT_LIST_OBJECT_INIT(list);
 
     RT_DEBUG_LOG(RT_DEBUG_TIMER, ("software timer check enter\n"));
 
