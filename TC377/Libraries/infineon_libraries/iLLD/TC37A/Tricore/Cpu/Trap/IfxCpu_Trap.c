@@ -56,10 +56,6 @@
 #include "Ifx_Cfg_Trap.h"
 #endif
 
-void tricore_trap_yield_for_task( int iTrapIdentification );
-
-#define IFX_CFG_CPU_TRAP_SYSCALL_CPU0_HOOK(trapInfo) tricore_trap_yield_for_task((trapInfo).tId)
-
 /******************************************************************************/
 /*                           Macros                                           */
 /******************************************************************************/
